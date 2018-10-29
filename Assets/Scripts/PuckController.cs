@@ -7,11 +7,15 @@ public class PuckController : MonoBehaviour {
     [Header("Puck Controls")]
     [Range(1f,7f)]
     public float size = 1f;
+    public float sizeMin = 1f;
+    public float sizeMax = 7f;
 
     [Header("Color Controls")]
-    public float colorChangeTime = 5f;
+    public float colorChangeTime;
+    public float colorChangeMin = 5f;
+    public float colorChangeMax = 15f;
     [Range(0f, 1f)]
-    public float colorChangeSpeed = 0.7f;
+    public float colorChangeSpeed = 1f;
     [Space]
     public float minHue = 0f;
     public float maxHue = 1f;
@@ -22,17 +26,17 @@ public class PuckController : MonoBehaviour {
     public float minAlpha = 1f;
     public float maxAlpha = 1f;
 
-    private float t;
     private bool clicked;
     private bool colorToggle;
     private Color currentColor;
+    private Color newColor;
 
     void Start ()
     {
         InitialPuckScale();
         InitialPuckColor();
         clicked = false;
-        t = 0f;
+        colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
 
         StartCoroutine(TriggerChangeColor());
     }
@@ -73,22 +77,7 @@ public class PuckController : MonoBehaviour {
     {
         if (colorToggle)
         {
-            /*
-            t += Time.deltaTime * colorChangeSpeed;
-            t = Mathf.Clamp(t, 0f, 1f);
-            */
-
-            // the bug here is that the NewRandColor() func is being updated every frame 
-            currentColor = Color.Lerp(currentColor, NewRandColor(), colorChangeSpeed);
-
-            print("Changing Color");
-            print(t);
-            print(currentColor);
-        }
-        else if (!colorToggle)
-        {
-            t = 0f;
-            print("Done");
+            currentColor = Color.Lerp(currentColor, newColor, (colorChangeSpeed * colorChangeSpeed) * (Time.deltaTime / 2));
         }
     }
 
@@ -98,14 +87,18 @@ public class PuckController : MonoBehaviour {
         {
             yield return new WaitForSeconds(colorChangeTime);
 
+            colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
+
             Debug.Log("ChangingColor");
             if (colorToggle)
             {
                 colorToggle = false;
+                currentColor = newColor;
             }
             else if (!colorToggle)
             {
                 colorToggle = true;
+                newColor = NewRandColor();
             }
         }
     }

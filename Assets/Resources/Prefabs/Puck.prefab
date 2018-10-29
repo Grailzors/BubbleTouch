@@ -37,8 +37,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1495209358002756}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.07, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,7 +99,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!114 &114012048298461356
 MonoBehaviour:
@@ -112,6 +112,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9193637833d07c4b99f3d777bc8324b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 1
+  sizeMin: 1
+  sizeMax: 7
+  colorChangeTime: 10
+  colorChangeMin: 5
+  colorChangeMax: 15
+  colorChangeSpeed: 1
+  minHue: 0
+  maxHue: 1
+  minSaturation: 0.6
+  maxSaturation: 0.9
+  minValue: 0.8
+  maxValue: 1
+  minAlpha: 1
+  maxAlpha: 1
 --- !u!136 &136214711163719432
 CapsuleCollider:
   m_ObjectHideFlags: 1
