@@ -9,6 +9,7 @@ public class PuckController : MonoBehaviour {
     public float size = 1f;
     public float sizeMin = 1f;
     public float sizeMax = 7f;
+    public float addSizeAmount = 0.5f;
 
     [Header("Color Controls")]
     public float colorChangeTime;
@@ -43,10 +44,23 @@ public class PuckController : MonoBehaviour {
 	
 	void Update ()
     {
-        ScalePuck();
+        //ScalePuck();
         ChangeColor();
 
         GetComponent<Renderer>().material.color = currentColor;
+    }
+
+    private void OnMouseDown()
+    {
+        print("Clicked");
+        //newColor = NewRandColor();
+        //ChangeColor();
+
+        size += addSizeAmount;
+
+        size = Mathf.Clamp(size, sizeMin, sizeMax);
+
+        transform.localScale = new Vector3(size, size, 1f);
     }
 
     void InitialPuckScale()
@@ -83,7 +97,7 @@ public class PuckController : MonoBehaviour {
 
     IEnumerator TriggerChangeColor()
     {
-        while (clicked == false)
+        while (true)//(clicked == false)
         {
             yield return new WaitForSeconds(colorChangeTime);
 
