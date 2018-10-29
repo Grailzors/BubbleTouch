@@ -53,11 +53,12 @@ public class PuckController : MonoBehaviour {
     private void OnMouseDown()
     {
         print("Clicked");
-        //newColor = NewRandColor();
-        //ChangeColor();
+
+        //I think I should remove this color changing
+        newColor = NewRandColor();
+        colorToggle = true;
 
         size += addSizeAmount;
-
         size = Mathf.Clamp(size, sizeMin, sizeMax);
 
         transform.localScale = new Vector3(size, size, 1f);
