@@ -6,6 +6,7 @@ public class PuckController : MonoBehaviour {
 
     [Header("Puck Info")]
     public int puckID;
+    public GameObject puckSibling;
     public bool clicked;
 
     [Header("Puck Controls")]
@@ -39,11 +40,15 @@ public class PuckController : MonoBehaviour {
     private float initialSize;
 
 
+    private void Awake()
+    {
+        SetPuckID();
+    }
+
     void Start ()
     {
         InitialPuckScale();
         InitialPuckColor();
-        SetPuckID();
         clicked = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
 
@@ -69,14 +74,17 @@ public class PuckController : MonoBehaviour {
             StartCoroutine(ResetClicked());
         }
 
+        /*
         if (GameManager.resizeSeed == puckID && GameManager.resizeSeed != this.puckID)
         {
             //size = new Vector3(subSizeAmount, subSizeAmount, 0f);
             transform.localScale = new Vector3(subSizeAmount, subSizeAmount, 0f);
             //transform.localScale -= new Vector3(subSizeAmount * 2, subSizeAmount * 2, 0f);
         }
+        */
+        transform.localScale = new Vector3(size, size, 0f);
+        puckSibling.transform.localScale -= new Vector3(subSizeAmount, subSizeAmount, 0f);
 
-        transform.localScale = new Vector3(size, size, 1f);
     }
 
     void SetPuckID()
@@ -86,6 +94,20 @@ public class PuckController : MonoBehaviour {
             if (transform.parent.GetChild(i).name == gameObject.name)
             {
                 puckID = i;
+            }
+        }
+    }
+
+    void SetSiblingID()
+    {
+        for (int i = 0; 0 < GameManager.pucks.Count; i++)
+        {
+            GameObject obj = GameManager.pucks[i].gameObject;
+
+            if ( obj.GetComponent<PuckController>().puckID != this.puckID)
+            {
+                puckSibling = obj;
+                GameManager.pucks.Remove(obj);
             }
         }
     }

@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 54215566240985576}
   m_Layer: 0
   m_Name: Puck
-  m_TagString: Untagged
+  m_TagString: Puck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &114012048298461356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,12 +112,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9193637833d07c4b99f3d777bc8324b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  puckID: 0
+  puckSibling: {fileID: 0}
+  clicked: 0
   size: 1
-  sizeMin: 1
+  sizeMin: 2
   sizeMax: 7
-  sizeChangeTime: 4
+  sizeChangeTime: 2
   addSizeAmount: 0.5
-  subSizeAmount: 0.4
+  subSizeAmount: 1.5
   colorChangeTime: 10
   colorChangeMin: 5
   colorChangeMax: 15
