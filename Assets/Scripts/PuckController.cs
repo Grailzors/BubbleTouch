@@ -49,6 +49,7 @@ public class PuckController : MonoBehaviour {
     {
         InitialPuckScale();
         InitialPuckColor();
+        SetSiblingID();
         clicked = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
 
@@ -98,9 +99,11 @@ public class PuckController : MonoBehaviour {
         }
     }
 
+    //This Function References the GameManager Script and pairs the objects in the scene
+    //together (NOT WORKING)
     void SetSiblingID()
     {
-        for (int i = 0; 0 < GameManager.pucks.Count; i++)
+        for (int i = 0; 0 < GameManager.pucks.Count + 1; i++)
         {
             GameObject obj = GameManager.pucks[i].gameObject;
 

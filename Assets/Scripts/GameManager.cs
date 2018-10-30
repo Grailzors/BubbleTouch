@@ -8,13 +8,19 @@ public class GameManager : MonoBehaviour {
 
     public static int resizeSeed;
     //public static List<GameObject> pucks;
-    public static GameObject[] pucks;
+    public static List<GameObject> pucks;
 
 
     private void Start()
     {
-        pucks = GameObject.FindGameObjectsWithTag("Puck");
-        //GetPucks();
+        pucks = new List<GameObject>();
+        GetPucks();
+
+        foreach (GameObject p in pucks)
+        {
+            print(p.name);
+        }
+
     }
 
     private void Update()
@@ -23,16 +29,14 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    /*
     void GetPucks()
     {
         foreach(GameObject p in GameObject.FindGameObjectsWithTag("Puck"))
         {
-            print(p.name);
             pucks.Add(p);
         }  
     }
-    */
+    
 
 }
 
