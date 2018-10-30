@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PuckController : MonoBehaviour {
 
+    [Header("Puck Info")]
+    public int puckID;
+    public bool clicked;
+
     [Header("Puck Controls")]
     [Range(1f,7f)]
     public float size = 1f;
     public float sizeMin = 1f;
     public float sizeMax = 7f;
+    public float sizeChangeTime = 10f;
     public float addSizeAmount = 0.5f;
+    public float subSizeAmount = 0.25f;
 
     [Header("Color Controls")]
     public float colorChangeTime;
@@ -27,24 +33,26 @@ public class PuckController : MonoBehaviour {
     public float minAlpha = 1f;
     public float maxAlpha = 1f;
 
-    private bool clicked;
     private bool colorToggle;
     private Color currentColor;
     private Color newColor;
+    private float initialSize;
+
 
     void Start ()
     {
         InitialPuckScale();
         InitialPuckColor();
+        SetPuckID();
         clicked = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
 
-        StartCoroutine(TriggerChangeColor());
+        StartCoroutine(TriggerChange());
     }
 	
 	void Update ()
     {
-        //ScalePuck();
+        ScalePuck();
         ChangeColor();
 
         GetComponent<Renderer>().material.color = currentColor;
@@ -52,21 +60,40 @@ public class PuckController : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        print("Clicked");
-
-        //I think I should remove this color changing
-        newColor = NewRandColor();
-        colorToggle = true;
-
         size += addSizeAmount;
         size = Mathf.Clamp(size, sizeMin, sizeMax);
+        GameManager.resizeSeed = Random.Range(0, transform.parent.childCount + 1);
+
+        if (!clicked)
+        {
+            StartCoroutine(ResetClicked());
+        }
+
+        if (GameManager.resizeSeed == puckID && GameManager.resizeSeed != this.puckID)
+        {
+            //size = new Vector3(subSizeAmount, subSizeAmount, 0f);
+            transform.localScale = new Vector3(subSizeAmount, subSizeAmount, 0f);
+            //transform.localScale -= new Vector3(subSizeAmount * 2, subSizeAmount * 2, 0f);
+        }
 
         transform.localScale = new Vector3(size, size, 1f);
+    }
+
+    void SetPuckID()
+    {
+        for (int i = 0; i < transform.parent.childCount; i++)
+        {
+            if (transform.parent.GetChild(i).name == gameObject.name)
+            {
+                puckID = i;
+            }
+        }
     }
 
     void InitialPuckScale()
     {
         size = Mathf.Clamp(Random.Range(1f, 8f), 1f, 7f);
+        initialSize = size;
 
         transform.localScale = new Vector3(size, size, 1f);
     }
@@ -96,15 +123,34 @@ public class PuckController : MonoBehaviour {
         }
     }
 
-    IEnumerator TriggerChangeColor()
+    IEnumerator ResetClicked()
     {
-        while (true)//(clicked == false)
+        clicked = true;
+
+        while (true)
         {
+            yield return new WaitForSeconds(2);
+            
+            clicked = false; 
+        }
+    }
+
+    IEnumerator TriggerChange()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(sizeChangeTime);
+
+            if (!clicked && transform.localScale.x != initialSize)
+            {
+                Debug.Log("reducing size");
+                transform.localScale = new Vector3(subSizeAmount, subSizeAmount, 0f);
+            }
+
             yield return new WaitForSeconds(colorChangeTime);
 
             colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
 
-            Debug.Log("ChangingColor");
             if (colorToggle)
             {
                 colorToggle = false;
@@ -114,9 +160,9 @@ public class PuckController : MonoBehaviour {
             {
                 colorToggle = true;
                 newColor = NewRandColor();
+
+                Debug.Log("Changing Color");
             }
         }
     }
-
-
 }

@@ -115,6 +115,9 @@ MonoBehaviour:
   size: 1
   sizeMin: 1
   sizeMax: 7
+  sizeChangeTime: 4
+  addSizeAmount: 0.5
+  subSizeAmount: 0.4
   colorChangeTime: 10
   colorChangeMin: 5
   colorChangeMax: 15
