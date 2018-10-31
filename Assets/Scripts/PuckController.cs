@@ -1,20 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PuckController : MonoBehaviour {
 
     [Header("Puck Info")]
+    public Text puckText;
     public int puckID;
     public GameObject puckSibling;
     public bool clicked;
+    public int clickCount = 0;
 
     [Header("Puck Controls")]
+    public float penetrationDepth;
     [Range(1f,7f)]
     public float size = 1f;
     public float sizeMin = 1f;
     public float sizeMax = 7f;
-    public float sizeChangeTime = 10f;
     public float addSizeAmount = 0.5f;
     public float subSizeAmount = 0.25f;
 
@@ -39,7 +42,7 @@ public class PuckController : MonoBehaviour {
     private Color newColor;
     private float initialSize;
 
-
+    
     private void Awake()
     {
         SetPuckID();
@@ -64,28 +67,31 @@ public class PuckController : MonoBehaviour {
         GetComponent<Renderer>().material.color = currentColor;
     }
 
+    private void LateUpdate()
+    {
+        UpdateClickCounter();
+    }
+
+    private void FixedUpdate()
+    {
+        GetComponent<Rigidbody>().maxDepenetrationVelocity = penetrationDepth;
+    }
+
     private void OnMouseDown()
     {
-        size += addSizeAmount;
-        size = Mathf.Clamp(size, sizeMin, sizeMax);
-        GameManager.resizeSeed = Random.Range(0, transform.parent.childCount + 1);
-
         if (!clicked)
         {
             StartCoroutine(ResetClicked());
         }
 
-        /*
-        if (GameManager.resizeSeed == puckID && GameManager.resizeSeed != this.puckID)
-        {
-            //size = new Vector3(subSizeAmount, subSizeAmount, 0f);
-            transform.localScale = new Vector3(subSizeAmount, subSizeAmount, 0f);
-            //transform.localScale -= new Vector3(subSizeAmount * 2, subSizeAmount * 2, 0f);
-        }
-        */
-        transform.localScale = new Vector3(size, size, 0f);
-        puckSibling.transform.localScale -= new Vector3(subSizeAmount, subSizeAmount, 0f);
+        clickCount += 1;
+        size += addSizeAmount;
 
+        transform.localScale = new Vector3(size, size, 0f);
+        print("Increased Size: " + gameObject.name);
+
+        puckSibling.transform.localScale -= new Vector3(subSizeAmount, subSizeAmount, 0f);
+        print("Decreased Size: " + puckSibling.name);
     }
 
     void SetPuckID()
@@ -103,21 +109,25 @@ public class PuckController : MonoBehaviour {
     //together (NOT WORKING)
     void SetSiblingID()
     {
-        for (int i = 0; 0 < GameManager.pucks.Count + 1; i++)
-        {
-            GameObject obj = GameManager.pucks[i].gameObject;
+        int id = puckID + 1;
+        int count = GameManager.pucks.Length - 1;
 
-            if ( obj.GetComponent<PuckController>().puckID != this.puckID)
+        foreach (GameObject obj in GameManager.pucks)
+        {
+            if (this.puckID == GameManager.pucks.Length - 1 && obj.GetComponent<PuckController>().puckID == 0)
+            {
+                puckSibling = GameManager.pucks[count];
+            }
+            else if (obj.GetComponent<PuckController>().puckID == id)
             {
                 puckSibling = obj;
-                GameManager.pucks.Remove(obj);
-            }
+            }           
         }
     }
 
     void InitialPuckScale()
     {
-        size = Mathf.Clamp(Random.Range(1f, 8f), 1f, 7f);
+        size = Random.Range(sizeMin, sizeMax - 1.5f);
         initialSize = size;
 
         transform.localScale = new Vector3(size, size, 1f);
@@ -137,6 +147,7 @@ public class PuckController : MonoBehaviour {
 
     void ScalePuck()
     {
+        size = Mathf.Clamp(transform.localScale.x, sizeMin, sizeMax);
         transform.localScale = new Vector3(size, size, 1f);
     }
 
@@ -146,6 +157,11 @@ public class PuckController : MonoBehaviour {
         {
             currentColor = Color.Lerp(currentColor, newColor, (colorChangeSpeed * colorChangeSpeed) * (Time.deltaTime / 2));
         }
+    }
+
+    void UpdateClickCounter()
+    {
+        puckText.text = clickCount.ToString();
     }
 
     IEnumerator ResetClicked()
@@ -164,14 +180,6 @@ public class PuckController : MonoBehaviour {
     {
         while (true)
         {
-            yield return new WaitForSeconds(sizeChangeTime);
-
-            if (!clicked && transform.localScale.x != initialSize)
-            {
-                Debug.Log("reducing size");
-                transform.localScale = new Vector3(subSizeAmount, subSizeAmount, 0f);
-            }
-
             yield return new WaitForSeconds(colorChangeTime);
 
             colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
