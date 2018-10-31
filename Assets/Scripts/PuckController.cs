@@ -6,16 +6,15 @@ using UnityEngine.UI;
 public class PuckController : MonoBehaviour {
 
     [Header("Puck Info")]
-    public Text puckText;
     public int puckID;
     public GameObject puckSibling;
     public bool clicked;
-    public int clickCount = 0;
 
     [Header("Puck Controls")]
     public float penetrationDepth;
     [Range(1f,7f)]
     public float size = 1f;
+    public float scaleTime = 1f;
     public float sizeMin = 1f;
     public float sizeMax = 7f;
     public float addSizeAmount = 0.5f;
@@ -41,6 +40,8 @@ public class PuckController : MonoBehaviour {
     private Color currentColor;
     private Color newColor;
     private float initialSize;
+    private float newSize;
+    private float newSiblingSize;
 
     
     private void Awake()
@@ -67,11 +68,6 @@ public class PuckController : MonoBehaviour {
         GetComponent<Renderer>().material.color = currentColor;
     }
 
-    private void LateUpdate()
-    {
-        UpdateClickCounter();
-    }
-
     private void FixedUpdate()
     {
         GetComponent<Rigidbody>().maxDepenetrationVelocity = penetrationDepth;
@@ -84,14 +80,11 @@ public class PuckController : MonoBehaviour {
             StartCoroutine(ResetClicked());
         }
 
-        clickCount += 1;
-        size += addSizeAmount;
+        newSize = transform.localScale.x + addSizeAmount;
+        newSize = Mathf.Clamp(newSize, sizeMin, sizeMax);
 
-        transform.localScale = new Vector3(size, size, 0f);
-        print("Increased Size: " + gameObject.name);
-
-        puckSibling.transform.localScale -= new Vector3(subSizeAmount, subSizeAmount, 0f);
-        print("Decreased Size: " + puckSibling.name);
+        newSiblingSize = puckSibling.transform.localScale.x - subSizeAmount;
+        newSiblingSize = Mathf.Clamp(newSiblingSize, sizeMin, sizeMax);
     }
 
     void SetPuckID()
@@ -106,7 +99,6 @@ public class PuckController : MonoBehaviour {
     }
 
     //This Function References the GameManager Script and pairs the objects in the scene
-    //together (NOT WORKING)
     void SetSiblingID()
     {
         int id = puckID + 1;
@@ -147,21 +139,26 @@ public class PuckController : MonoBehaviour {
 
     void ScalePuck()
     {
-        size = Mathf.Clamp(transform.localScale.x, sizeMin, sizeMax);
-        transform.localScale = new Vector3(size, size, 1f);
-    }
+        if (clicked)
+        {
+            //INCREASE THIS PUCK SCALE 
+            transform.localScale = Vector3.Lerp(transform.localScale,
+                new Vector3(newSize, newSize, 1f),
+                scaleTime * (Time.deltaTime / 2));
 
+            //DECREASE SIBLING SCALE
+            puckSibling.transform.localScale = Vector3.Lerp(puckSibling.transform.localScale,
+                new Vector3(newSiblingSize, newSiblingSize, 1f),
+                scaleTime * (Time.deltaTime / 2));
+        }
+    }
+        
     void ChangeColor()
     {
         if (colorToggle)
         {
             currentColor = Color.Lerp(currentColor, newColor, (colorChangeSpeed * colorChangeSpeed) * (Time.deltaTime / 2));
         }
-    }
-
-    void UpdateClickCounter()
-    {
-        puckText.text = clickCount.ToString();
     }
 
     IEnumerator ResetClicked()
@@ -172,7 +169,7 @@ public class PuckController : MonoBehaviour {
         {
             yield return new WaitForSeconds(2);
             
-            clicked = false; 
+            clicked = false;
         }
     }
 
