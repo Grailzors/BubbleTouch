@@ -8,17 +8,26 @@ public class PuckController : MonoBehaviour {
     [Header("Puck Info")]
     public int puckID;
     public GameObject puckSibling;
-    public bool clicked;
+    public bool isClicked;
 
     [Header("Puck Controls")]
     public float penetrationDepth;
+    [Space]
+    public float moveAmountMin = 10f;
+    public float moveAmountMax = 20f;
+    public float moveTimeMin = 1f;
+    public float moveTimeMax = 4f;
+    [Space]
     [Range(1f,7f)]
     public float size = 1f;
-    public float scaleTime = 1f;
+    public float sizeTime = 1f;
     public float sizeMin = 1f;
     public float sizeMax = 7f;
     public float addSizeAmount = 0.5f;
     public float subSizeAmount = 0.25f;
+
+    [Header("Puck Highlight Control")]
+    public float brighten = 5f;
 
     [Header("Color Controls")]
     public float colorChangeTime;
@@ -39,9 +48,12 @@ public class PuckController : MonoBehaviour {
     private bool colorToggle;
     private Color currentColor;
     private Color newColor;
+    private Color origColor;
     private float initialSize;
     private float newSize;
     private float newSiblingSize;
+    private float origSize;
+    private bool onClick;
 
     
     private void Awake()
@@ -54,18 +66,22 @@ public class PuckController : MonoBehaviour {
         InitialPuckScale();
         InitialPuckColor();
         SetSiblingID();
-        clicked = false;
+        isClicked = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
+        origColor = currentColor;
 
         StartCoroutine(TriggerChange());
+        StartCoroutine(MovePuck());
     }
 	
 	void Update ()
     {
-        ScalePuck();
-        ChangeColor();
+        currentColor = Color.Lerp(currentColor, origColor, (brighten / 1.2f) * Time.deltaTime);
 
         GetComponent<Renderer>().material.color = currentColor;
+
+        ScalePuck();
+        ChangeColor();
     }
 
     private void FixedUpdate()
@@ -75,7 +91,30 @@ public class PuckController : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        if (!clicked)
+        origColor = currentColor;
+    }
+
+    private void OnMouseDrag()
+    {
+        //PUT THE HIGHLIGHTING OF THE PUCK
+        OnPuckDrag();
+    }
+
+    private void OnMouseUp()
+    {
+        //currentColor = Color.Lerp(currentColor, origColor, Time.deltaTime);
+
+        ResizePuck();
+    }
+
+    void OnPuckDrag()
+    {
+        currentColor = Color.Lerp(currentColor, new Color(1, 0.9606f, 0.755f, 1), brighten * Time.deltaTime);
+    }
+
+    void ResizePuck()
+    {
+        if (!isClicked)
         {
             StartCoroutine(ResetClicked());
         }
@@ -139,17 +178,17 @@ public class PuckController : MonoBehaviour {
 
     void ScalePuck()
     {
-        if (clicked)
+        if (isClicked)
         {
             //INCREASE THIS PUCK SCALE 
             transform.localScale = Vector3.Lerp(transform.localScale,
                 new Vector3(newSize, newSize, 1f),
-                scaleTime * (Time.deltaTime / 2));
+                sizeTime * (Time.deltaTime / 2));
 
             //DECREASE SIBLING SCALE
             puckSibling.transform.localScale = Vector3.Lerp(puckSibling.transform.localScale,
                 new Vector3(newSiblingSize, newSiblingSize, 1f),
-                scaleTime * (Time.deltaTime / 2));
+                sizeTime * (Time.deltaTime / 2));
         }
     }
         
@@ -161,15 +200,45 @@ public class PuckController : MonoBehaviour {
         }
     }
 
+    IEnumerator MovePuck()
+    {
+        float t = Random.Range(moveTimeMin, moveTimeMax);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(t);
+
+            float m = Random.Range(moveAmountMin, moveAmountMax);
+            int dir = Random.Range(0, 5);
+            t = Random.Range(moveTimeMin, moveTimeMax);
+
+            switch(dir)
+            {
+                case 0:
+                    GetComponent<Rigidbody>().AddForce(Vector3.up * m);
+                    break;
+                case 1:
+                    GetComponent<Rigidbody>().AddForce(Vector3.right * m);
+                    break;
+                case 2:
+                    GetComponent<Rigidbody>().AddForce(Vector3.down * m);
+                    break;
+                case 3:
+                    GetComponent<Rigidbody>().AddForce(Vector3.left * m);
+                    break;
+            }
+        }
+    }
+
     IEnumerator ResetClicked()
     {
-        clicked = true;
+        isClicked = true;
 
         while (true)
         {
             yield return new WaitForSeconds(2);
             
-            clicked = false;
+            isClicked = false;
         }
     }
 
