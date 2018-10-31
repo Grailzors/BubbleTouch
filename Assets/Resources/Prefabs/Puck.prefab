@@ -112,14 +112,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9193637833d07c4b99f3d777bc8324b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puckText: {fileID: 0}
   puckID: 0
   puckSibling: {fileID: 0}
   clicked: 0
-  clickCount: 0
   penetrationDepth: 308.23
+  moveAmountMin: 30
+  moveAmountMax: 55
+  moveTimeMin: 1
+  moveTimeMax: 4
   size: 1
-  scaleTime: 20
+  sizeTime: 20
   sizeMin: 10
   sizeMax: 24
   addSizeAmount: 2
