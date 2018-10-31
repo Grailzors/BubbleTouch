@@ -55,7 +55,11 @@ public class PuckController : MonoBehaviour {
     private float origSize;
     private bool onClick;
 
-    
+    /*
+     * IAM GOING TO MAKE A PIECE OF GEO DISK THAT SITS OVER THE PUCK
+     * THAT HIGHLIGHTS
+    */
+
     private void Awake()
     {
         SetPuckID();
@@ -78,7 +82,7 @@ public class PuckController : MonoBehaviour {
     {
         currentColor = Color.Lerp(currentColor, origColor, (brighten / 1.2f) * Time.deltaTime);
 
-        GetComponent<Renderer>().material.color = currentColor;
+        //GetComponent<Renderer>().material.color = currentColor;
 
         ScalePuck();
         ChangeColor();
