@@ -10,22 +10,14 @@ public class WallController : MonoBehaviour {
     public float distanceMin = 0f;
     public float distanceMax = 0f;
 
-    private BoxCollider collider;
-
+    //private BoxCollider collider;
 
     // Use this for initialization
     void Start ()
     {
-        collider = GetComponent<BoxCollider>();
-        collider.size = new Vector3(radius, radius, radius);
+        //collider = GetComponent<BoxCollider>();
+        //collider.size = new Vector3(radius, radius, radius);
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        
-	}
-
 
     private void OnCollisionStay(Collision col)
     {
@@ -36,19 +28,10 @@ public class WallController : MonoBehaviour {
     {
         if (col.rigidbody.tag == "Puck")
         {
-            /*
-            float d = Vector3.Distance(transform.position, col.transform.position);
-            print(d);
-
-            col.rigidbody.AddForce(new Vector3(1,1,1) * strength);
-            */
-
             Vector3 dir = col.contacts[0].point - transform.position;
             dir = dir.normalized;
 
             col.rigidbody.AddForce(dir + (Vector3.Normalize(dir) * strength));
-
         }
     }
-
 }
