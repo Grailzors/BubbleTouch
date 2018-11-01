@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puckID: 0
   puckSibling: {fileID: 0}
-  clicked: 0
+  isClicked: 0
   penetrationDepth: 308.23
   moveAmountMin: 30
   moveAmountMax: 55
@@ -126,6 +126,9 @@ MonoBehaviour:
   sizeMax: 24
   addSizeAmount: 2
   subSizeAmount: 2.5
+  brighten: 0
+  brightMin: 0
+  brightMax: 1
   colorChangeTime: 10
   colorChangeMin: 5
   colorChangeMax: 15

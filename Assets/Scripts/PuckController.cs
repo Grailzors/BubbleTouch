@@ -27,7 +27,10 @@ public class PuckController : MonoBehaviour {
     public float subSizeAmount = 0.25f;
 
     [Header("Puck Highlight Control")]
-    public float brighten = 5f;
+    [Range(0f,1f)]
+    public float brighten = 0f;
+    public float brightMin = 0f;
+    public float brightMax = 1f;
 
     [Header("Color Controls")]
     public float colorChangeTime;
@@ -53,12 +56,8 @@ public class PuckController : MonoBehaviour {
     private float newSize;
     private float newSiblingSize;
     private float origSize;
-    private bool onClick;
+    private bool onDrag;
 
-    /*
-     * IAM GOING TO MAKE A PIECE OF GEO DISK THAT SITS OVER THE PUCK
-     * THAT HIGHLIGHTS
-    */
 
     private void Awake()
     {
@@ -71,6 +70,7 @@ public class PuckController : MonoBehaviour {
         InitialPuckColor();
         SetSiblingID();
         isClicked = false;
+        onDrag = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
         origColor = currentColor;
 
@@ -80,17 +80,9 @@ public class PuckController : MonoBehaviour {
 	
 	void Update ()
     {
-        /*
-        if (onClick)
-        {
-            
-            print("Reverting Color");
-        }
-        */
+        HighlightPuck();
 
-        //currentColor = Color.Lerp(currentColor, origColor, (brighten / 5) * Time.deltaTime);
-
-        GetComponent<Renderer>().material.color = currentColor;
+        GetComponent<Renderer>().material.SetColor("Color_ACFF11DB", currentColor);
 
         ScalePuck();
         ChangeColor();
@@ -101,27 +93,15 @@ public class PuckController : MonoBehaviour {
         GetComponent<Rigidbody>().maxDepenetrationVelocity = penetrationDepth;
     }
 
-    private void OnMouseDown()
-    {
-        origColor = currentColor;
-    }
-
     private void OnMouseDrag()
     {
-        OnPuckDrag();
+        onDrag = true;
     }
 
     private void OnMouseUp()
     {
-        currentColor = origColor;
-
-        StartCoroutine(ResetHighlight());
+        onDrag = false;
         ResizePuck();
-    }
-
-    void OnPuckDrag()
-    {
-        currentColor = Color.Lerp(currentColor, new Color(1, 0.9606f, 0.755f, 1), brighten * Time.deltaTime);
     }
 
     void ResizePuck()
@@ -212,6 +192,24 @@ public class PuckController : MonoBehaviour {
         }
     }
 
+    void HighlightPuck()
+    {
+        if (onDrag)
+        {
+            brighten += 2f * Time.deltaTime;
+            brighten = Mathf.Clamp01(brighten);
+
+            GetComponent<Renderer>().material.SetFloat("Vector1_C1BE8C16", Mathf.Lerp(brighten, brightMax, 0.001f * Time.deltaTime));
+        }
+        else if (!onDrag)
+        {
+            brighten -= 2.5f * Time.deltaTime;
+            brighten = Mathf.Clamp01(brighten);
+
+            GetComponent<Renderer>().material.SetFloat("Vector1_C1BE8C16", Mathf.Lerp(brighten, brightMin, 0.001f * Time.deltaTime));
+        }
+    }
+
     IEnumerator MovePuck()
     {
         float t = Random.Range(moveTimeMin, moveTimeMax);
@@ -251,18 +249,6 @@ public class PuckController : MonoBehaviour {
             yield return new WaitForSeconds(2);
             
             isClicked = false;
-        }
-    }
-
-    IEnumerator ResetHighlight()
-    {
-        onClick = true;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(2);
-
-            onClick = false;
         }
     }
 
