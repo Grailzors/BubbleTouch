@@ -4,34 +4,17 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour {
 
-    [Header("Repulse Control")]
-    public float radius = 1f;
     public float strength = 10f;
-    public float distanceMin = 0f;
-    public float distanceMax = 0f;
+    public float length = 1f;
 
-    //private BoxCollider collider;
-
-    // Use this for initialization
-    void Start ()
+    private void OnDrawGizmos()
     {
-        //collider = GetComponent<BoxCollider>();
-        //collider.size = new Vector3(radius, radius, radius);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + ((transform.up / 2) * length));
     }
 
-    private void OnCollisionStay(Collision col)
+    private void OnTriggerStay(Collider other)
     {
-        RepulseObjects(col);
-    }
-
-    void RepulseObjects(Collision col)
-    {
-        if (col.rigidbody.tag == "Puck")
-        {
-            Vector3 dir = col.contacts[0].point - transform.position;
-            dir = dir.normalized;
-
-            col.rigidbody.AddForce(dir + (Vector3.Normalize(dir) * strength));
-        }
+        other.GetComponent<Rigidbody>().AddForce(transform.up * strength);
     }
 }
