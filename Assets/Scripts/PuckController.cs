@@ -31,6 +31,7 @@ public class PuckController : MonoBehaviour {
     public float brighten = 0f;
     public float brightMin = 0f;
     public float brightMax = 1f;
+    public float highlightSizeMax = 1.5f;
 
     [Header("Color Controls")]
     public float colorChangeTime;
@@ -55,7 +56,6 @@ public class PuckController : MonoBehaviour {
     private float initialSize;
     private float newSize;
     private float newSiblingSize;
-    private float origSize;
     private bool onDrag;
 
 
