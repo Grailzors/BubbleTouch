@@ -75,7 +75,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_A8134099: {r: 1, g: 0.9606, b: 0.755, a: 0}
-    - Color_ACFF11DB: {r: 1, g: 0, b: 0, a: 0}
+    - Color_ACFF11DB: {r: 1, g: 0.741, b: 0.175, a: 0}
     - Color_CDA4FA5F: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 0}
     - Color_D5397429: {r: 1, g: 0.85633945, b: 0, a: 0}
     - _Color: {r: 1, g: 0.8411184, b: 0, a: 1}
