@@ -80,9 +80,17 @@ public class PuckController : MonoBehaviour {
 	
 	void Update ()
     {
-        currentColor = Color.Lerp(currentColor, origColor, (brighten / 1.2f) * Time.deltaTime);
+        /*
+        if (onClick)
+        {
+            
+            print("Reverting Color");
+        }
+        */
 
-        //GetComponent<Renderer>().material.color = currentColor;
+        //currentColor = Color.Lerp(currentColor, origColor, (brighten / 5) * Time.deltaTime);
+
+        GetComponent<Renderer>().material.color = currentColor;
 
         ScalePuck();
         ChangeColor();
@@ -100,14 +108,14 @@ public class PuckController : MonoBehaviour {
 
     private void OnMouseDrag()
     {
-        //PUT THE HIGHLIGHTING OF THE PUCK
         OnPuckDrag();
     }
 
     private void OnMouseUp()
     {
-        //currentColor = Color.Lerp(currentColor, origColor, Time.deltaTime);
+        currentColor = origColor;
 
+        StartCoroutine(ResetHighlight());
         ResizePuck();
     }
 
@@ -243,6 +251,18 @@ public class PuckController : MonoBehaviour {
             yield return new WaitForSeconds(2);
             
             isClicked = false;
+        }
+    }
+
+    IEnumerator ResetHighlight()
+    {
+        onClick = true;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+
+            onClick = false;
         }
     }
 
