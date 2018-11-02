@@ -11,7 +11,9 @@ public class UIManager : MonoBehaviour {
     public Image[] soundButton;
     public Image menuBG;
 
-
-
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
 }
