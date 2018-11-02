@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallController : MonoBehaviour {
 
-    public float strength = 10f;
+    public float strength = 55f;
     public float length = 1f;
 
     private void OnDrawGizmos()

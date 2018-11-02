@@ -13,8 +13,12 @@ public class GameManager : MonoBehaviour {
 
     private void Awake()
     {
-
         pucks = GameObject.FindGameObjectsWithTag("Puck");
+    }
+
+    private void Start()
+    {
+                
     }
 }
 
