@@ -25,16 +25,6 @@ public class GameManager : MonoBehaviour {
         GetPucks();
     }
 
-    public void LoadGamePlay()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
-    public void ReturnToMainMenu()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-    }
-
     void GetPucks()
     {
         if (SceneManager.GetActiveScene().buildIndex == 1)
