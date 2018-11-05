@@ -22,10 +22,20 @@ public class GameManager : MonoBehaviour {
         LoadCamera();
     }
 
+    /*
+     * DOESNT WORK AND IS BEING DEPRICATED GO WITH NEW IDEA INSTEAD
     private void OnLevelWasLoaded(int level)
     {
-        GetPucks();
+        switch(level)
+        {
+            case 1:
+                GetPucks();
+                break;
+            default:
+                break;
+        }
     }
+    */
 
     void GetPucks()
     {
