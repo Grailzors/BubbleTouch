@@ -5,19 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    public Camera mainCam;
+
+    [SerializeField]
     public static GameObject[] pucks;
 
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 
     private void Start()
     {
-                
+        LoadUI();
+        LoadCamera();
     }
 
     private void OnLevelWasLoaded(int level)
@@ -31,6 +33,16 @@ public class GameManager : MonoBehaviour {
         {
             pucks = GameObject.FindGameObjectsWithTag("Puck");
         }
+    }
+
+    void LoadCamera()
+    {
+        Instantiate(mainCam);
+    }
+
+    void LoadUI()
+    {
+        SceneManager.LoadScene("UI", LoadSceneMode.Additive);
     }
 }
 

@@ -28,6 +28,7 @@ public class CameraController : MonoBehaviour {
     private void Awake()
     {
         mainCam = Camera.main;
+        DontDestroyOnLoad(mainCam);
     }
 
     private void Start()
