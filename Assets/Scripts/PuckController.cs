@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PuckController : MonoBehaviour {
 
@@ -69,6 +68,7 @@ public class PuckController : MonoBehaviour {
         InitialPuckScale();
         InitialPuckColor();
         SetSiblingID();
+
         isClicked = false;
         onDrag = false;
         colorChangeTime = Random.Range(colorChangeMin, colorChangeMax);
@@ -104,6 +104,11 @@ public class PuckController : MonoBehaviour {
         ResizePuck();
     }
 
+    private void OnCollisionStay(Collision col)
+    {
+        col.transform.GetComponent<Rigidbody>().AddForce((GetComponent<Rigidbody>().velocity * -1) / 2);
+    }
+
     void ResizePuck()
     {
         if (!isClicked)
@@ -125,6 +130,7 @@ public class PuckController : MonoBehaviour {
             if (transform.parent.GetChild(i).name == gameObject.name)
             {
                 puckID = i;
+                print(gameObject.name + " " + i);
             }
         }
     }
@@ -133,13 +139,13 @@ public class PuckController : MonoBehaviour {
     void SetSiblingID()
     {
         int id = puckID + 1;
-        int count = GameManager.pucks.Length - 1;
+        int count = PuckCollector.pucks.Length - 1;
 
-        foreach (GameObject obj in GameManager.pucks)
+        foreach (GameObject obj in PuckCollector.pucks)
         {
-            if (this.puckID == GameManager.pucks.Length - 1 && obj.GetComponent<PuckController>().puckID == 0)
+            if (this.puckID == PuckCollector.pucks.Length - 1 && obj.GetComponent<PuckController>().puckID == 0)
             {
-                puckSibling = GameManager.pucks[count];
+                puckSibling = PuckCollector.pucks[count];
             }
             else if (obj.GetComponent<PuckController>().puckID == id)
             {

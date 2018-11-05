@@ -129,6 +129,7 @@ MonoBehaviour:
   brighten: 0
   brightMin: 0
   brightMax: 1
+  highlightSizeMax: 1.5
   colorChangeTime: 10
   colorChangeMin: 5
   colorChangeMax: 15
@@ -150,7 +151,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.49999985
-  m_Height: 0.9999999
-  m_Direction: 1
+  m_Radius: 0.495
+  m_Height: 13.5
+  m_Direction: 2
   m_Center: {x: 0.000000059604645, y: 0.000000074505806, z: 0}

@@ -23,17 +23,22 @@ public class UIManager : MonoBehaviour {
     [Header("UI Controls")]
     public float bgSlideTime = 1f;
 
-    [Space]
+    [Header("Debug Vars")]
     [SerializeField]
     private bool isSound;
     [SerializeField]
     private bool isHidden;
+    [Space]
+    [SerializeField]
+    public static bool inGame;
+
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         isSound = true;
         isHidden = true;
+        inGame = false;
     }
 
     public void LateUpdate()
@@ -43,10 +48,9 @@ public class UIManager : MonoBehaviour {
 
     public void LoadGamePlay()
     {
-        SceneManager.LoadScene("Main", LoadSceneMode.Additive);
-
         if (!inGameMenu.activeSelf)
         {
+            inGame = true;
             inGameMenu.SetActive(true);
             mainMenu.SetActive(false);
         }
@@ -54,12 +58,11 @@ public class UIManager : MonoBehaviour {
 
     public void ReturnToMainMenu()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-
-        SceneManager.UnloadSceneAsync("Main");
+        isHidden = true;
 
         if (!mainMenu.activeSelf)
         {
+            inGame = false;
             mainMenu.SetActive(true);
             inGameMenu.SetActive(false);
         }
@@ -107,12 +110,12 @@ public class UIManager : MonoBehaviour {
         if (!isHidden)
         {
             menuBG.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(b, new Vector2(60f, 0f), bgSlideTime * Time.deltaTime);
-            print("Slide Out");
+            //print("Slide Out");
         }
         else if (isHidden)
         {
             menuBG.GetComponent<RectTransform>().anchoredPosition = Vector3.Lerp(b, new Vector2(-60f, 0f), bgSlideTime * Time.deltaTime);
-            print("Slide In");
+            //print("Slide In");
         }
     }
 }
