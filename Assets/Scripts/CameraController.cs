@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class CameraController : MonoBehaviour {
 
@@ -50,13 +51,10 @@ public class CameraController : MonoBehaviour {
         StartCoroutine(TriggerBackgroundColorChange());
     }
 
-    private void Update()
-    {
-        UpdateBackgroundColor();
-    }
 
     private void LateUpdate()
     {
+        UpdateBackgroundColor();
         UpdateCam();
     }
 
@@ -84,6 +82,7 @@ public class CameraController : MonoBehaviour {
 
         mainCam.backgroundColor = currentColor;
     }
+
 
     public Color NewRandColor()
     {

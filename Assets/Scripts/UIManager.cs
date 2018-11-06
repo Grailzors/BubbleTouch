@@ -11,25 +11,35 @@ public class UIManager : MonoBehaviour {
     public GameObject inGameMenu;
 
     [Header("UI Components")]
+    public Image[] mainMenuComponents;
+    public Image[] inGameComponents;
+    public Image[] fadeComponents;
+    [Space]
     public Image playButton;
     public Image backButton;
     public Image[] soundButton;
     public Image menuBG;
+    public Text titleText;
 
     [Header("Sprites")]
     public Sprite soundOn;
     public Sprite soundOff;
 
     [Header("UI Controls")]
+    public float toggleMenuTime = 1f;
     public float bgSlideTime = 1f;
+    public float fadeTime = 1f;
 
     [Header("Debug Vars")]
     [SerializeField]
     private bool isSound;
     [SerializeField]
     private bool isHidden;
-    [Space]
     [SerializeField]
+    private float fadeInAmount;
+    [SerializeField]
+    private float fadeOutAmount;
+
     public static bool inGame;
 
 
@@ -44,28 +54,106 @@ public class UIManager : MonoBehaviour {
     public void LateUpdate()
     {
         InGameMenuMove();
+        FadeUI(mainMenu, inGameMenu, titleText, mainMenuComponents, inGame, false);
+        FadeUI(mainMenu, inGameMenu, null, inGameComponents, inGame, true);
     }
+
+    /*
+    IEnumerator ToggleMenu(GameObject obj1, GameObject obj2)
+    {
+        bool t = true;
+
+        while (t)
+        {
+            yield return new WaitForSeconds(toggleMenuTime);
+
+            if (obj1.activeSelf)
+            {
+                obj1.SetActive(false);
+                obj2.SetActive(true);
+            }
+            else if (!obj1.activeSelf)
+            {
+                obj1.SetActive(true);
+                obj2.SetActive(false);
+            }
+
+            t = false;
+        }
+    }
+    */
 
     public void LoadGamePlay()
     {
-        if (!inGameMenu.activeSelf)
-        {
-            inGame = true;
-            inGameMenu.SetActive(true);
-            mainMenu.SetActive(false);
-        }
+        //StartCoroutine(ToggleMenu(mainMenu, inGameMenu));
+        inGame = true;
     }
 
     public void ReturnToMainMenu()
     {
         isHidden = true;
 
-        if (!mainMenu.activeSelf)
+        //StartCoroutine(ToggleMenu(inGameMenu, mainMenu));
+        inGame = false;
+    }
+
+    //Currently trying to make this work very close now
+    void FadeUI(GameObject obj1, GameObject obj2, Text txt, Image[] img, bool con, bool reverse)
+    {
+        float time = fadeTime * Time.deltaTime;
+
+        if (con && !reverse || !con && reverse)
         {
-            inGame = false;
-            mainMenu.SetActive(true);
-            inGameMenu.SetActive(false);
+            fadeInAmount += time;
+            fadeOutAmount = 1;
+
+            if (txt != null)
+            {
+                txt.color = new Vector4(txt.color.r, txt.color.g, txt.color.b, Mathf.Lerp(txt.color.a, 0f, time));
+            }
+            
+            if (img != null)
+            {
+                foreach (Image i in img)
+                {
+                    i.color = new Vector4(i.color.r, i.color.g, i.color.b, Mathf.Lerp(i.color.a, 0f, time));
+                }
+            }
         }
+        else if (!con && !reverse || con && reverse)
+        {
+            fadeOutAmount -= time;
+            fadeInAmount = 0;
+
+            if (txt != null)
+            {
+                txt.color = new Vector4(txt.color.r, txt.color.g, txt.color.b, Mathf.Lerp(txt.color.a, 1f, time));
+            }
+
+            if (img != null)
+            {
+                foreach (Image i in img)
+                {
+                    i.color = new Vector4(i.color.r, i.color.g, i.color.b, Mathf.Lerp(i.color.a, 1f, time));
+                }
+            }
+        }
+
+        
+        fadeInAmount = Mathf.Clamp01(fadeInAmount);
+        fadeOutAmount = Mathf.Clamp01(fadeOutAmount);
+
+        if (fadeInAmount == 0 || fadeOutAmount == 0)
+        {
+            obj1.SetActive(false);
+            obj2.SetActive(true);
+        }
+        else if (fadeInAmount == 1 || fadeOutAmount == 1)
+        {
+            obj1.SetActive(true);
+            obj2.SetActive(false);
+        }
+        
     }
 
     public void ToggleSound()

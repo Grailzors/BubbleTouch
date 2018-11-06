@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.7607843}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -605,38 +605,90 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: mainMenu
+      value: 
+      objectReference: {fileID: 806928958}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: inGameMenu
+      value: 
+      objectReference: {fileID: 1010304537}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: mainMenuComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 1894137691}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: mainMenuComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 561199916}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: fadeComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 1810791732}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: fadeComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 1562530647}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: fadeComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 1777973377}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: fadeComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 1894137691}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: fadeComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: 561199916}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: playButton
+      value: 
+      objectReference: {fileID: 1894137691}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: backButton
+      value: 
+      objectReference: {fileID: 1562530647}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: soundButton.Array.data[0]
+      value: 
+      objectReference: {fileID: 561199916}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: soundButton.Array.data[1]
+      value: 
+      objectReference: {fileID: 1777973377}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: menuBG
+      value: 
+      objectReference: {fileID: 294963778}
+    - target: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+        type: 2}
+      propertyPath: titleText
+      value: 
+      objectReference: {fileID: 2062990411}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dfa507bd1a69c8a4db1cdb99ced34c93, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1637207045 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1132390600612550, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
+--- !u!114 &1637207046 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114136272512063296, guid: dfa507bd1a69c8a4db1cdb99ced34c93,
     type: 2}
   m_PrefabInternal: {fileID: 1637207044}
---- !u!114 &1637207046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1637207045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 039773fcab1e1da489051d155248984a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainMenu: {fileID: 806928958}
-  inGameMenu: {fileID: 1010304537}
-  playButton: {fileID: 1894137691}
-  backButton: {fileID: 1562530647}
-  soundButton:
-  - {fileID: 561199916}
-  - {fileID: 1777973377}
-  menuBG: {fileID: 294963778}
-  soundOn: {fileID: 21300000, guid: 5206c6e284f17c04cadac8659f008608, type: 3}
-  soundOff: {fileID: 21300000, guid: 36fba33d04584564cac57e64ff767ccc, type: 3}
-  bgSlideTime: 5
-  isSound: 0
-  isHidden: 0
 --- !u!1001 &1747087864
 Prefab:
   m_ObjectHideFlags: 0
@@ -857,6 +909,11 @@ Prefab:
         type: 2}
       propertyPath: m_LocalScale.z
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114889137733879446, guid: a33064c5628368b42ad68bd68244758c,
+        type: 2}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a33064c5628368b42ad68bd68244758c, type: 2}
