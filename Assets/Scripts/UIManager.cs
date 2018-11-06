@@ -36,9 +36,7 @@ public class UIManager : MonoBehaviour {
     [SerializeField]
     private bool isHidden;
     [SerializeField]
-    private float fadeInAmount;
-    [SerializeField]
-    private float fadeOutAmount;
+    private float fade;
 
     public static bool inGame;
 
@@ -53,9 +51,13 @@ public class UIManager : MonoBehaviour {
 
     public void LateUpdate()
     {
+        Fade();
+
         InGameMenuMove();
-        FadeUI(mainMenu, inGameMenu, titleText, mainMenuComponents, inGame, false);
-        FadeUI(mainMenu, inGameMenu, null, inGameComponents, inGame, true);
+        FadeUI(titleText, mainMenuComponents, inGame, false);
+        FadeUI(null, inGameComponents, inGame, true);
+
+        ToggleMenu(mainMenu, inGameMenu, fade);
     }
 
     /*
@@ -98,14 +100,13 @@ public class UIManager : MonoBehaviour {
     }
 
     //Currently trying to make this work very close now
-    void FadeUI(GameObject obj1, GameObject obj2, Text txt, Image[] img, bool con, bool reverse)
+    void FadeUI(Text txt, Image[] img, bool con, bool reverse)
     {
         float time = fadeTime * Time.deltaTime;
 
-        if (con && !reverse || !con && reverse)
+        if (con && !reverse)
         {
-            fadeInAmount += time;
-            fadeOutAmount = 1;
+            //fade += time;
 
             if (txt != null)
             {
@@ -120,10 +121,9 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
-        else if (!con && !reverse || con && reverse)
+        else if (!con && !reverse)
         {
-            fadeOutAmount -= time;
-            fadeInAmount = 0;
+            fade -= time;
 
             if (txt != null)
             {
@@ -139,21 +139,59 @@ public class UIManager : MonoBehaviour {
             }
         }
 
-        
-        fadeInAmount = Mathf.Clamp01(fadeInAmount);
-        fadeOutAmount = Mathf.Clamp01(fadeOutAmount);
+        //fade = Mathf.Clamp01(fade);
+    }
 
-        if (fadeInAmount == 0 || fadeOutAmount == 0)
+
+    //CURRENTLY DOESN'T FADE THE IN GAME UI PROPERLY 
+    void Fade()
+    {
+        if (inGame)
         {
-            obj1.SetActive(false);
-            obj2.SetActive(true);
+            fade += fadeTime * (Time.deltaTime / 5);
+            print("adding");
         }
-        else if (fadeInAmount == 1 || fadeOutAmount == 1)
+        else if (!inGame)
         {
-            obj1.SetActive(true);
-            obj2.SetActive(false);
+            fade -= fadeTime * (Time.deltaTime / 5);
+            print("subtracking");
         }
-        
+
+        fade = Mathf.Clamp(fade, 0f, 1f);
+
+    }
+
+    void ToggleMenu(GameObject menu1, GameObject menu2, float value)
+    {
+
+        if (value == 1f)
+        {
+            menu1.SetActive(false);
+            menu2.SetActive(true);
+
+            print("Main Menu On");
+
+            
+            if (value < 0.7f)
+            {
+                menu2.SetActive(true);
+            }
+            
+        }
+        else if (value < 0)
+        {
+            menu1.SetActive(true);
+            menu2.SetActive(false);
+
+            print("Main Menu Off");
+
+            
+            if (value > 0.3f)
+            {
+                menu2.SetActive(false);
+            }
+            
+        }
     }
 
     public void ToggleSound()
