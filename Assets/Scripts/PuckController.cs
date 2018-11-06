@@ -130,7 +130,7 @@ public class PuckController : MonoBehaviour {
             if (transform.parent.GetChild(i).name == gameObject.name)
             {
                 puckID = i;
-                print(gameObject.name + " " + i);
+                //print(gameObject.name + " " + i);
             }
         }
     }

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GetPucks : MonoBehaviour {
+public class PuckCollector : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField]
+    public static GameObject[] pucks;
+
+
+    private void Awake()
+    {
+        pucks = GameObject.FindGameObjectsWithTag("Puck");
+
+        if (pucks.Length > 0)
+        {
+            print("Populated Array " + pucks);
+        }
+    }
 }
