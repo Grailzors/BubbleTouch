@@ -18,12 +18,15 @@ public class UIManager : MonoBehaviour {
     public Image playButton;
     public Image backButton;
     public Image[] soundButton;
+    public Image menuButton;
     public Image menuBG;
     public Text titleText;
 
     [Header("Sprites")]
     public Sprite soundOn;
     public Sprite soundOff;
+    public Sprite OptionOn;
+    public Sprite OptionOff;
 
     [Header("UI Controls")]
     public float toggleMenuTime = 1f;
@@ -193,6 +196,32 @@ public class UIManager : MonoBehaviour {
             
         }
     }
+
+    public void ToggleButton()
+    {
+        if (menuButton.GetComponent<Image>().sprite == OptionOn)
+        {
+            menuButton.GetComponent<Image>().sprite = OptionOff;
+        }
+        else
+        {
+            menuButton.GetComponent<Image>().sprite = OptionOn;
+        }
+    }
+
+    /*
+    public void ToggleSprite(GameObject obj, Sprite On, Sprite Off)
+    {
+        if (obj.GetComponent<Image>().sprite == On)
+        {
+            obj.GetComponent<Image>().sprite = Off;
+        }
+        else
+        {
+            obj.GetComponent<Image>().sprite = On;
+        }
+    }
+    */
 
     public void ToggleSound()
     {
