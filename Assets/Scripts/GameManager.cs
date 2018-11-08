@@ -21,6 +21,3 @@ public class GameManager : MonoBehaviour {
         Instantiate(mainCam, mainCam.GetComponent<CameraController>().mainMenuPos, mainCam.GetComponent<CameraController>().mainMenuRot);
     }
 }
-
-
-

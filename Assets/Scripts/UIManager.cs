@@ -152,12 +152,12 @@ public class UIManager : MonoBehaviour {
         if (inGame)
         {
             fade += fadeTime * (Time.deltaTime / 5);
-            print("adding");
+            //print("adding");
         }
         else if (!inGame)
         {
             fade -= fadeTime * (Time.deltaTime / 5);
-            print("subtracking");
+            //print("subtracking");
         }
 
         fade = Mathf.Clamp(fade, 0f, 1f);
@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour {
             menu1.SetActive(false);
             menu2.SetActive(true);
 
-            print("Main Menu On");
+            //print("Main Menu On");
 
             
             if (value < 0.7f)
@@ -186,7 +186,7 @@ public class UIManager : MonoBehaviour {
             menu1.SetActive(true);
             menu2.SetActive(false);
 
-            print("Main Menu Off");
+            //print("Main Menu Off");
 
             
             if (value > 0.3f)
@@ -232,7 +232,7 @@ public class UIManager : MonoBehaviour {
                 isSound = false;
                 AudioManager.isMuted = true;
                 s.GetComponent<Image>().sprite = soundOff;
-                print("turning sound off");
+                //print("turning sound off");
             }
         }
         else if (!isSound)
@@ -242,7 +242,7 @@ public class UIManager : MonoBehaviour {
                 isSound = true;
                 AudioManager.isMuted = false;
                 s.GetComponent<Image>().sprite = soundOn;
-                print("turning sound on");
+                //print("turning sound on");
             }
         }
     }

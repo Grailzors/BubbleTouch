@@ -106,7 +106,11 @@ public class PuckController : MonoBehaviour {
 
     private void OnCollisionStay(Collision col)
     {
-        col.transform.GetComponent<Rigidbody>().AddForce((GetComponent<Rigidbody>().velocity * -1) / 2);
+        if (col.gameObject.tag == "Puck")
+        {
+            col.transform.GetComponent<Rigidbody>().AddForce((GetComponent<Rigidbody>().velocity * -1) / 2);
+        }
+        
     }
 
     void ResizePuck()
