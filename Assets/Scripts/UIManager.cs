@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour {
 
     [Header("Debug Vars")]
     [SerializeField]
-    private bool isSound;
+    private static bool isSound;
     [SerializeField]
     private bool isHidden;
     [SerializeField]
@@ -230,6 +230,7 @@ public class UIManager : MonoBehaviour {
             foreach (Image s in soundButton)
             {
                 isSound = false;
+                AudioManager.isMuted = true;
                 s.GetComponent<Image>().sprite = soundOff;
                 print("turning sound off");
             }
@@ -239,6 +240,7 @@ public class UIManager : MonoBehaviour {
             foreach (Image s in soundButton)
             {
                 isSound = true;
+                AudioManager.isMuted = false;
                 s.GetComponent<Image>().sprite = soundOn;
                 print("turning sound on");
             }
