@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour {
     public Image backButton;
     public Image[] soundButton;
     public Image menuButton;
-    public Image menuBG;
+    public GameObject menuBG;
     public Text titleText;
 
     [Header("Sprites")]
@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour {
 
     [Header("Debug Vars")]
     [SerializeField]
-    private static bool isSound;
+    public static bool isSound;
     [SerializeField]
     private bool isHidden;
     [SerializeField]
@@ -62,31 +62,6 @@ public class UIManager : MonoBehaviour {
 
         ToggleMenu(mainMenu, inGameMenu, fade);
     }
-
-    /*
-    IEnumerator ToggleMenu(GameObject obj1, GameObject obj2)
-    {
-        bool t = true;
-
-        while (t)
-        {
-            yield return new WaitForSeconds(toggleMenuTime);
-
-            if (obj1.activeSelf)
-            {
-                obj1.SetActive(false);
-                obj2.SetActive(true);
-            }
-            else if (!obj1.activeSelf)
-            {
-                obj1.SetActive(true);
-                obj2.SetActive(false);
-            }
-
-            t = false;
-        }
-    }
-    */
 
     public void LoadGamePlay()
     {
