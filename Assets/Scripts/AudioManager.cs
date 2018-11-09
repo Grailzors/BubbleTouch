@@ -5,6 +5,11 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     public AudioSource[] audioSources;
+    [Range(0f, 1f)]
+    public float volumeMax = 0.5f;
+    [Range(0f, 1f)]
+    public float volumeMin = 0f;
+    public float muteSpeed = 2f;
 
     public static bool isMuted;
 
@@ -15,20 +20,22 @@ public class AudioManager : MonoBehaviour {
 
     private void LateUpdate()
     {
-        TurnOffSound();
+        Mute();
     }
 
-    public void TurnOffSound()
+    public void Mute()
     {
         foreach (AudioSource a in audioSources)
         {
             if (!isMuted)
             {
-                a.mute = false;
+                a.volume = Mathf.Lerp(a.volume, volumeMax, muteSpeed * Time.deltaTime);
+                //a.mute = false;
             }
             else
             {
-                a.mute = true;
+                a.volume = Mathf.Lerp(a.volume, volumeMin, muteSpeed * Time.deltaTime);
+                //a.mute = true;
             }
         }
     }

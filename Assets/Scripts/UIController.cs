@@ -5,43 +5,118 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour {
 
+    public MenuType.menuType type = MenuType.menuType.main;
+    [Space]
 
+    [Header("UI Components")]
+    public Text[] text;
+    public Image[] image;
+    public Sprite toggleSprite1;
+    public Sprite toggleSprite2;
 
-    public void ToggleSprite(GameObject obj, Sprite On, Sprite Off)
+    [Header("UI Controls")]
+    public bool resetSprite = false;
+    public bool isButton = false;
+    public float fadeTime = 1f;
+
+    private float fade;
+
+    private void Start()
     {
-        if (obj.GetComponent<Image>().sprite == On)
+        fade = 0f;
+    }
+
+    private void LateUpdate()
+    {
+        FadeControl();
+        FadeUI();
+        InteractableControl(isButton);
+        ResetSprite();
+    }
+
+    void InteractableControl(bool isButton)
+    {
+        if (isButton)
         {
-            obj.GetComponent<Image>().sprite = Off;
+            if (type == UIManager.currentMenu)
+            {
+                foreach (Image i in image)
+                {
+                    i.raycastTarget = true;
+                }
+
+                GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                foreach (Image i in image)
+                {
+                    i.raycastTarget = false;
+                }
+
+                GetComponent<Button>().interactable = false;
+            }
+        }
+
+    }
+
+    void FadeControl()
+    {
+        if (type == UIManager.currentMenu)
+        {
+            fade += fadeTime * (Time.deltaTime / 5);
         }
         else
         {
-            obj.GetComponent<Image>().sprite = On;
+            fade -= fadeTime * (Time.deltaTime / 5);
+        }
+
+        fade = Mathf.Clamp(fade, 0f, 1f);
+    }
+
+    void FadeUI()
+    {
+        if (text.Length > 0)
+        {
+            foreach (Text t in text)
+            {
+                t.color = new Color(t.color.r,
+                    t.color.g,
+                    t.color.b,
+                    fade);
+            }
+        }
+
+        if (image.Length > 0)
+        {
+            foreach (Image i in image)
+            {
+                i.color = new Color(i.color.r,
+                    i.color.g,
+                    i.color.b,
+                    fade);
+            }
         }
     }
 
-    /*
-    public void ToggleSound()
+    public void ToggleSprite(Sprite sprite)
     {
-        if (UIManager.isSound)
+        if (GetComponent<Image>().sprite == toggleSprite2)
         {
-            foreach (Image s in soundButton)
-            {
-                isSound = false;
-                AudioManager.isMuted = true;
-                s.GetComponent<Image>().sprite = soundOff;
-                //print("turning sound off");
-            }
+            GetComponent<Image>().sprite = sprite;
         }
-        else if (!UIManager.isSound)
+        else
         {
-            foreach (Image s in soundButton)
-            {
-                isSound = true;
-                AudioManager.isMuted = false;
-                s.GetComponent<Image>().sprite = soundOn;
-                //print("turning sound on");
-            }
+            GetComponent<Image>().sprite = toggleSprite2;
         }
     }
-    */
+
+    void ResetSprite()
+    {
+        if (resetSprite && type != UIManager.currentMenu)
+        {
+            GetComponent<Image>().sprite = toggleSprite1;
+        }
+    }
+
 }

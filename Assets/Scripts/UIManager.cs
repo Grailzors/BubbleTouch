@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 
+    public static MenuType.menuType currentMenu = MenuType.menuType.main;
+
     [Header("UI Canvases")]
     public GameObject mainMenu;
     public GameObject inGameMenu;
@@ -40,6 +42,7 @@ public class UIManager : MonoBehaviour {
     private bool isHidden;
     [SerializeField]
     private float fade;
+    private Sprite sprite1;
 
     public static bool inGame;
 
@@ -54,19 +57,20 @@ public class UIManager : MonoBehaviour {
 
     public void LateUpdate()
     {
-        Fade();
+        //Fade();
 
         InGameMenuMove();
-        FadeUI(titleText, mainMenuComponents, inGame, false);
-        FadeUI(null, inGameComponents, inGame, true);
+        //FadeUI(titleText, mainMenuComponents, inGame, false);
+        //FadeUI(null, inGameComponents, inGame, true);
 
-        ToggleMenu(mainMenu, inGameMenu, fade);
+        //ToggleMenu(mainMenu, inGameMenu, fade);
     }
 
     public void LoadGamePlay()
     {
         //StartCoroutine(ToggleMenu(mainMenu, inGameMenu));
         inGame = true;
+        currentMenu = MenuType.menuType.game;
     }
 
     public void ReturnToMainMenu()
@@ -75,128 +79,9 @@ public class UIManager : MonoBehaviour {
 
         //StartCoroutine(ToggleMenu(inGameMenu, mainMenu));
         inGame = false;
+
+        currentMenu = MenuType.menuType.main;
     }
-
-    //Currently trying to make this work very close now
-    void FadeUI(Text txt, Image[] img, bool con, bool reverse)
-    {
-        float time = fadeTime * Time.deltaTime;
-
-        if (con && !reverse)
-        {
-            //fade += time;
-
-            if (txt != null)
-            {
-                txt.color = new Vector4(txt.color.r, txt.color.g, txt.color.b, Mathf.Lerp(txt.color.a, 0f, time));
-            }
-            
-            if (img != null)
-            {
-                foreach (Image i in img)
-                {
-                    i.color = new Vector4(i.color.r, i.color.g, i.color.b, Mathf.Lerp(i.color.a, 0f, time));
-                }
-            }
-        }
-        else if (!con && !reverse)
-        {
-            fade -= time;
-
-            if (txt != null)
-            {
-                txt.color = new Vector4(txt.color.r, txt.color.g, txt.color.b, Mathf.Lerp(txt.color.a, 1f, time));
-            }
-
-            if (img != null)
-            {
-                foreach (Image i in img)
-                {
-                    i.color = new Vector4(i.color.r, i.color.g, i.color.b, Mathf.Lerp(i.color.a, 1f, time));
-                }
-            }
-        }
-
-        //fade = Mathf.Clamp01(fade);
-    }
-
-
-    //CURRENTLY DOESN'T FADE THE IN GAME UI PROPERLY 
-    void Fade()
-    {
-        if (inGame)
-        {
-            fade += fadeTime * (Time.deltaTime / 5);
-            //print("adding");
-        }
-        else if (!inGame)
-        {
-            fade -= fadeTime * (Time.deltaTime / 5);
-            //print("subtracking");
-        }
-
-        fade = Mathf.Clamp(fade, 0f, 1f);
-
-    }
-
-    void ToggleMenu(GameObject menu1, GameObject menu2, float value)
-    {
-
-        if (value == 1f)
-        {
-            menu1.SetActive(false);
-            menu2.SetActive(true);
-
-            //print("Main Menu On");
-
-            
-            if (value < 0.7f)
-            {
-                menu2.SetActive(true);
-            }
-            
-        }
-        else if (value < 0)
-        {
-            menu1.SetActive(true);
-            menu2.SetActive(false);
-
-            //print("Main Menu Off");
-
-            
-            if (value > 0.3f)
-            {
-                menu2.SetActive(false);
-            }
-            
-        }
-    }
-
-    public void ToggleButton()
-    {
-        if (menuButton.GetComponent<Image>().sprite == OptionOn)
-        {
-            menuButton.GetComponent<Image>().sprite = OptionOff;
-        }
-        else
-        {
-            menuButton.GetComponent<Image>().sprite = OptionOn;
-        }
-    }
-
-    /*
-    public void ToggleSprite(GameObject obj, Sprite On, Sprite Off)
-    {
-        if (obj.GetComponent<Image>().sprite == On)
-        {
-            obj.GetComponent<Image>().sprite = Off;
-        }
-        else
-        {
-            obj.GetComponent<Image>().sprite = On;
-        }
-    }
-    */
 
     public void ToggleSound()
     {
@@ -207,7 +92,6 @@ public class UIManager : MonoBehaviour {
                 isSound = false;
                 AudioManager.isMuted = true;
                 s.GetComponent<Image>().sprite = soundOff;
-                //print("turning sound off");
             }
         }
         else if (!isSound)
@@ -217,7 +101,6 @@ public class UIManager : MonoBehaviour {
                 isSound = true;
                 AudioManager.isMuted = false;
                 s.GetComponent<Image>().sprite = soundOn;
-                //print("turning sound on");
             }
         }
     }
@@ -251,3 +134,13 @@ public class UIManager : MonoBehaviour {
         }
     }
 }
+
+
+[System.Serializable]
+public class MenuType {
+
+    public enum menuType { main, game }
+
+}
+
+
