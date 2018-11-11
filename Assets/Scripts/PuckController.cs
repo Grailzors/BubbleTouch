@@ -96,6 +96,14 @@ public class PuckController : MonoBehaviour {
     private void OnMouseDrag()
     {
         onDrag = true;
+
+
+        //the 30f on the z is the Camera offset
+        Vector3 touchPos =  new Vector3(Input.mousePosition.x, Input.mousePosition.y, 30f);
+        //Vector3 touchPos = new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, transform.position.z);
+        Vector3 objPos = Camera.main.ScreenToWorldPoint(touchPos);
+
+        transform.position = Vector3.Lerp(transform.position, objPos, 5 * Time.deltaTime);
     }
 
     private void OnMouseUp()
