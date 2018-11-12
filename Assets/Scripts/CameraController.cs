@@ -107,7 +107,7 @@ public class CameraController : MonoBehaviour {
                 colorToggle = true;
                 newColor = NewRandColor();
 
-                Debug.Log("Changing Color");
+                //Debug.Log("Changing Color");
             }
         }
     }

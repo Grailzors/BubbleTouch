@@ -126,6 +126,7 @@ MonoBehaviour:
   sizeMax: 24
   addSizeAmount: 2
   subSizeAmount: 2.5
+  dragLag: 4.5
   brighten: 0
   brightMin: 0
   brightMax: 1
