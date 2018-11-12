@@ -161,7 +161,7 @@ public class PuckController : MonoBehaviour {
 
         if (Input.touchCount > 0)
         {
-            touchPos = new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, transform.position.z);
+            touchPos = new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, 30f);
         }
 
         Vector3 objPos = Camera.main.ScreenToWorldPoint(touchPos);
