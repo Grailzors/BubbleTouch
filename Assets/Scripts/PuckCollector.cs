@@ -11,10 +11,5 @@ public class PuckCollector : MonoBehaviour {
     private void Awake()
     {
         pucks = GameObject.FindGameObjectsWithTag("Puck");
-
-        if (pucks.Length > 0)
-        {
-            print("Populated Array " + pucks);
-        }
     }
 }

@@ -24,6 +24,8 @@ public class PuckController : MonoBehaviour {
     public float sizeMax = 7f;
     public float addSizeAmount = 0.5f;
     public float subSizeAmount = 0.25f;
+    [Space]
+    public float dragLag = 2.5f;
 
     [Header("Puck Highlight Control")]
     [Range(0f,1f)]
@@ -56,6 +58,8 @@ public class PuckController : MonoBehaviour {
     private float newSize;
     private float newSiblingSize;
     private bool onDrag;
+    private Vector3 touchPos;
+    private Vector3 origSize;
 
 
     private void Awake()
@@ -93,9 +97,17 @@ public class PuckController : MonoBehaviour {
         GetComponent<Rigidbody>().maxDepenetrationVelocity = penetrationDepth;
     }
 
+    private void OnMouseDown()
+    {
+        origSize = transform.localScale;
+    }
+
     private void OnMouseDrag()
     {
         onDrag = true;
+
+        DragPuck();
+        DragScale();
     }
 
     private void OnMouseUp()
@@ -137,6 +149,30 @@ public class PuckController : MonoBehaviour {
                 //print(gameObject.name + " " + i);
             }
         }
+    }
+
+    void DragPuck()
+    {
+        //the 30f on the z is the Camera offset
+        if (Input.mousePresent)
+        {
+            touchPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 30f);
+        }
+
+        if (Input.touchCount > 0)
+        {
+            touchPos = new Vector3(Input.touches[0].position.x, Input.touches[0].position.y, transform.position.z);
+        }
+
+        Vector3 objPos = Camera.main.ScreenToWorldPoint(touchPos);
+
+        //GetComponent<Rigidbody>().MovePosition(Vector3.Lerp(transform.position, objPos, dragLag * Time.deltaTime));
+        transform.position = Vector3.Lerp(transform.position, objPos, dragLag * Time.deltaTime);
+    }
+
+    void DragScale()
+    {
+        transform.localScale = Vector3.Lerp(transform.localScale, origSize * 1.12f, dragLag * Time.deltaTime);
     }
 
     //This Function References the GameManager Script and pairs the objects in the scene
@@ -280,7 +316,7 @@ public class PuckController : MonoBehaviour {
                 colorToggle = true;
                 newColor = NewRandColor();
 
-                Debug.Log("Changing Color");
+                //Debug.Log("Changing Color");
             }
         }
     }
